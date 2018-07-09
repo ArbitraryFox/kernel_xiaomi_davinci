@@ -89,3 +89,5 @@ obj-$(CONFIG_NET_NCSI)		+= ncsi/
 obj-$(CONFIG_RMNET_DATA) += rmnet_data/
 obj-$(CONFIG_RMNET_USB) += rmnet_usb/
 obj-$(CONFIG_XDP_SOCKETS)	+= xdp/
+
+subdir-ccflags-y := -Os
