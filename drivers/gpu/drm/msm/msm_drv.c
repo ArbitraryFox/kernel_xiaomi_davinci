@@ -815,7 +815,7 @@ static int msm_drm_init(struct device *dev, struct drm_driver *drv)
 		/* Only pin first event thread to big cluster */
 		if (i) {
                         priv->event_thread[i].thread =
-                                kthread_run(kthread_worker_fn,
+                                kthread_run_perf_critical(kthread_worker_fn,
                                         &priv->event_thread[i].worker,
                                         "crtc_event:%d", priv->event_thread[i].crtc_id);
                         pr_info("%i to little cluster", priv->event_thread[i].crtc_id);
