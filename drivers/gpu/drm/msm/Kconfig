@@ -209,3 +209,8 @@ config FENCE_DEBUG
 	bool "Print fence name to userspace"
 	depends on DRM_MSM
 	default n
+
+config FENCE_DEBUG
+	bool "Print fence name to userspace"
+	depends on DRM_MSM
+	default n
