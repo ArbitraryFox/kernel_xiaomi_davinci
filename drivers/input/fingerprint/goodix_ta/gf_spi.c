@@ -12,7 +12,6 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-#define DEBUG
 #define pr_fmt(fmt)     KBUILD_MODNAME ": " fmt
 #ifdef CONFIG_MACH_XIAOMI_F4
 #define GOODIX_DRM_INTERFACE_WA
