@@ -94,7 +94,7 @@ int gf_power_on(struct gf_dev *gf_dev)
 	}
 
 #endif
-	msleep(10);
+	usleep_range(10000, 10100);
 	return rc;
 }
 
