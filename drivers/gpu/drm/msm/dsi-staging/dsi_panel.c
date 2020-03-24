@@ -5148,6 +5148,8 @@ static int panel_disp_param_send_lock(struct dsi_panel *panel, int param)
 	int rc = 0;
 	uint32_t temp = 0;
 	u32 fod_backlight = 0;
+	static u8 backlight_delta = 0;
+	u32 resend_backlight;
 	struct dsi_panel_cmd_set cmd_sets = {0};
 	struct dsi_cmd_desc *cmds = NULL;
 	struct dsi_display_mode_priv_info *priv_info;
@@ -5546,27 +5548,25 @@ static int panel_disp_param_send_lock(struct dsi_panel *panel, int param)
 		break;
 	case DISPPARAM_HBM_BACKLIGHT_RESEND:
 		if (panel->bl_config.samsung_prepare_hbm_flag) {
-			u32 dim_backlight;
+			backlight_delta++;
 
-			if (panel->last_bl_lvl >= panel->bl_config.bl_max_level - 1) {
-				if (panel->backlight_delta == -1)
-					panel->backlight_delta = -2;
-				else
-					panel->backlight_delta = -1;
-			} else {
-				if (panel->backlight_delta == 1)
-					panel->backlight_delta = 2;
-				else
-					panel->backlight_delta = 1;
-			}
+			if (panel->last_bl_lvl >= panel->bl_config.bl_max_level - 1)
+				resend_backlight = panel->last_bl_lvl -
+					((backlight_delta%2 == 0) ? 1 : 2);
+			else
+				resend_backlight = panel->last_bl_lvl +
+					((backlight_delta%2 == 0) ? 1 : 2);
 
 			if (panel->fod_backlight_flag) {
-				dim_backlight = panel->fod_target_backlight + panel->backlight_delta;
-			} else {
-				dim_backlight = panel->last_bl_lvl + panel->backlight_delta;
+				if (panel->fod_target_backlight >= panel->bl_config.bl_max_level - 1) {
+	                                resend_backlight = panel->last_bl_lvl -
+					((backlight_delta%2 == 0) ? 1 : 2);
+				}
 			}
-			pr_info("backlight repeat:%d\n", dim_backlight);
-			rc = dsi_panel_update_backlight(panel, dim_backlight);
+
+			pr_debug("backlight resend: last_bl_lvl = %d; resend_backlight = %d\n",
+					panel->last_bl_lvl, resend_backlight);
+			rc = dsi_panel_update_backlight(panel, resend_backlight);
 		}
 		break;
 	case DISPPARAM_FOD_BACKLIGHT:
