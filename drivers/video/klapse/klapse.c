@@ -14,11 +14,11 @@
 /* Tunables */
 static unsigned short enabled = DEFAULT_ENABLE;
 static unsigned short daytime_r = MAX_SCALE;
-static unsigned short daytime_g = MAX_SCALE;
-static unsigned short daytime_b = MAX_SCALE;
+static unsigned short daytime_g = MAX_SCALE * 96 / 100;
+static unsigned short daytime_b = MAX_SCALE * 93 / 100;
 static unsigned short target_r = MAX_SCALE;
-static unsigned short target_g = MAX_SCALE * 79 / 100;
-static unsigned short target_b = MAX_SCALE * 59 / 100;
+static unsigned short target_g = MAX_SCALE * 51 / 100;
+static unsigned short target_b = MAX_SCALE * 0 / 100;
 static unsigned int start_minute = 1050;
 static unsigned int stop_minute = 450;
 static unsigned short b_cache = 100;
