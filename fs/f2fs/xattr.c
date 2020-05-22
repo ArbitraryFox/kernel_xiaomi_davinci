@@ -350,7 +350,7 @@ static int lookup_all_xattrs(struct inode *inode, struct page *ipage,
 		f2fs_err(F2FS_I_SB(inode), "inode (%lu) has corrupted xattr",
 								inode->i_ino);
 		set_sbi_flag(F2FS_I_SB(inode), SBI_NEED_FSCK);
-		err = -EFSCORRUPTED;
+		err = -EFAULT;
 		goto out;
 	}
 check:
@@ -641,7 +641,7 @@ static int __f2fs_setxattr(struct inode *inode, int index,
 		f2fs_err(F2FS_I_SB(inode), "inode (%lu) has corrupted xattr",
 								inode->i_ino);
 		set_sbi_flag(F2FS_I_SB(inode), SBI_NEED_FSCK);
-		error = -EFSCORRUPTED;
+		error = -EFAULT;
 		goto exit;
 	}
 
