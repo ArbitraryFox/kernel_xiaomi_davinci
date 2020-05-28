@@ -5134,6 +5134,7 @@ int dsi_panel_pre_mode_switch_to_cmd(struct dsi_panel *panel)
 	if (rc)
 		pr_err("[%s] failed to send DSI_CMD_SET_VID_TO_CMD_SWITCH cmds, rc=%d\n",
 			panel->name, rc);
+	return rc;
 }
 
 static void handle_dsi_read_data(struct dsi_panel *panel, struct dsi_read_config *read_config)
@@ -5854,6 +5855,7 @@ int dsi_panel_mode_switch_to_vid(struct dsi_panel *panel)
 		pr_err("[%s] failed to send DSI_CMD_SET_POST_CMD_TO_VID_SWITCH cmds, rc=%d\n",
 			panel->name, rc);
 	mutex_unlock(&panel->panel_lock);
+	return rc;
 }
 
 static char string_to_hex(const char *str)
