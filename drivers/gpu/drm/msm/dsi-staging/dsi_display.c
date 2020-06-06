@@ -1290,6 +1290,7 @@ int dsi_display_set_power(struct drm_connector *connector,
 	return rc;
 }
 
+#ifdef CONFIG_DEBUG_FS
 static ssize_t debugfs_dump_info_read(struct file *file,
 				      char __user *user_buf,
 				      size_t user_len,
@@ -1837,6 +1838,17 @@ static int dsi_display_debugfs_deinit(struct dsi_display *display)
 
 	return 0;
 }
+#else
+static int dsi_display_debugfs_init(struct dsi_display *display)
+{
+	return 0;
+}
+
+static int dsi_display_debugfs_deinit(struct dsi_display *display)
+{
+	return 0;
+}
+#endif /* CONFIG_DEBUG_FS */
 
 static void adjust_timing_by_ctrl_count(const struct dsi_display *display,
 					struct dsi_display_mode *mode)
