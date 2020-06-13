@@ -10,7 +10,6 @@
  * GNU General Public License for more details.
  */
 
-#define DEBUG
 #include <linux/irq.h>
 #include <linux/kernel.h>
 #include <linux/init.h>
