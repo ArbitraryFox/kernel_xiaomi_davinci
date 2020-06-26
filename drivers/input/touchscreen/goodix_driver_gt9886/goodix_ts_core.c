@@ -2517,7 +2517,7 @@ static int goodix_ts_probe(struct platform_device *pdev)
 		goto out;
 	}
 
-	if (core_data->gtp_tp_class == NULL)
+		if (core_data->gtp_tp_class == NULL)
 #ifdef CONFIG_TOUCHSCREEN_XIAOMI_TOUCHFEATURE
 		core_data->gtp_tp_class = get_xiaomi_touch_class();
 		if (core_data->gtp_tp_class == NULL)
