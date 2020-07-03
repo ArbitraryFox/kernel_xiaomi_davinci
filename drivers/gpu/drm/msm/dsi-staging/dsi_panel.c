@@ -885,8 +885,6 @@ int dsi_panel_set_backlight(struct dsi_panel *panel, u32 bl_lvl)
 	if (panel->host_config.ext_bridge_num)
 		return 0;
 
-	pr_debug("backlight type:%d lvl:%d\n", bl->type, bl_lvl);
-
 	if (0 == bl_lvl)
 		dsi_panel_tx_cmd_set(panel, DSI_CMD_SET_DISP_DIMMINGOFF);
 
@@ -895,17 +893,14 @@ int dsi_panel_set_backlight(struct dsi_panel *panel, u32 bl_lvl)
 		rc = backlight_device_set_brightness(bl->raw_bd, bl_lvl);
 		break;
 	case DSI_BACKLIGHT_DCS:
-		if (panel->fod_backlight_flag) {
-			pr_info("fod_backlight_flag set\n");
-		} else {
-			if (panel->f4_51_ctrl_flag &&
+		if (panel->f4_51_ctrl_flag &&
 				(panel->fod_hbm_enabled || panel->hbm_enabled || panel->fod_dimlayer_hbm_enabled)) {
 				pr_info("if use 51 register control hbm and hbm on(%d,%d), skip set backlight: %d\n",
 					panel->fod_hbm_enabled, panel->hbm_enabled, bl_lvl);
 			} else {
+		if (!panel->fod_backlight_flag)
 				rc = dsi_panel_update_backlight(panel, bl_lvl);
 			}
-		}
 		break;
 	case DSI_BACKLIGHT_EXTERNAL:
 		break;
@@ -913,7 +908,6 @@ int dsi_panel_set_backlight(struct dsi_panel *panel, u32 bl_lvl)
 		rc = dsi_panel_update_pwm_backlight(panel, bl_lvl);
 		break;
 	default:
-		pr_err("Backlight type(%d) not supported\n", bl->type);
 		rc = -ENOTSUPP;
 	}
 
