@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Linux/arm64 4.14.186 Kernel Configuration
+# Linux/arm64 4.14.187 Kernel Configuration
 #
 CONFIG_ARM64=y
 CONFIG_64BIT=y
@@ -4414,8 +4414,6 @@ CONFIG_ION_SYSTEM_HEAP=y
 CONFIG_ION_DEFER_FREE_NO_SCHED_IDLE=y
 CONFIG_ION_POOL_AUTO_REFILL=y
 CONFIG_ION_POOL_FILL_MARK=100
-# CONFIG_FIQ_DEBUGGER is not set
-# CONFIG_FIQ_WATCHDOG is not set
 # CONFIG_STAGING_BOARD is not set
 # CONFIG_LTE_GDM724X is not set
 # CONFIG_LNET is not set
@@ -5621,6 +5619,16 @@ CONFIG_INTEGRITY=y
 CONFIG_DEFAULT_SECURITY_SELINUX=y
 # CONFIG_DEFAULT_SECURITY_DAC is not set
 CONFIG_DEFAULT_SECURITY="selinux"
+
+#
+# Kernel hardening options
+#
+
+#
+# Memory initialization
+#
+CONFIG_INIT_STACK_NONE=y
+# CONFIG_INIT_STACK_ALL is not set
 CONFIG_CRYPTO=y
 
 #
