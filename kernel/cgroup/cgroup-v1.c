@@ -557,7 +557,7 @@ static ssize_t __cgroup1_procs_write(struct kernfs_open_file *of,
 	/* This covers boosting for app launches and app transitions */
 	if (!ret && !threadgroup && !strcmp(of->kn->parent->name, "top-app") &&
 	    task_is_zygote(task->parent))
-		cpu_input_boost_kick_max(1000);
+		cpu_input_boost_kick_max(500);
 
 out_finish:
 	cgroup_procs_write_finish(task, locked);
