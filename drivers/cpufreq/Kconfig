@@ -316,7 +316,7 @@ endif
 
 config CPU_FREQ_DEFAULT_LITTLE_MIN
 	int "Default minimum frequency for the little cluster"
-	default 576000
+	default 0
 	help
 	  This sets the default minimum frequency (in kHz) for the little CPU
 	  cluster.
@@ -325,7 +325,7 @@ config CPU_FREQ_DEFAULT_LITTLE_MIN
 
 config CPU_FREQ_DEFAULT_BIG_MIN
 	int "Default minimum frequency for the big cluster"
-	default 652800
+	default 0
 	help
 	  This sets the default minimum frequency (in kHz) for the big CPU
 	  cluster.
@@ -334,7 +334,7 @@ config CPU_FREQ_DEFAULT_BIG_MIN
 
 config CPU_FREQ_DEFAULT_LITTLE_MAX
 	int "Default minimum frequency for the little cluster"
-	default 1804800
+	default 0
 	help
 	  This sets the default minimum frequency (in kHz) for the little CPU
 	  cluster.
@@ -343,7 +343,7 @@ config CPU_FREQ_DEFAULT_LITTLE_MAX
 
 config CPU_FREQ_DEFAULT_BIG_MAX
 	int "Default minimum frequency for the big cluster"
-	default 2208000
+	default 0
 	help
 	  This sets the default minimum frequency (in kHz) for the big CPU
 	  cluster.
