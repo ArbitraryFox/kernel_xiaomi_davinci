@@ -609,7 +609,7 @@ void pm_qos_add_request(struct pm_qos_request *req,
 	case PM_QOS_REQ_AFFINE_IRQ:
 		if (irq_can_set_affinity(req->irq)) {
 			struct irq_desc *desc = irq_to_desc(req->irq);
-			struct cpumask *mask;
+			const struct cpumask *mask;
 
 			if (!desc)
 				return;
@@ -624,6 +624,8 @@ void pm_qos_add_request(struct pm_qos_request *req,
 				mask = irq_data_get_affinity_mask(
 						&desc->irq_data);
 
+			/* IRQs only run on the first CPU in the affinity mask; reflect that */
+			mask = cpumask_of(cpumask_first(mask));
 			cpumask_copy(&req->cpus_affine, mask);
 			req->irq_notify.irq = req->irq;
 			req->irq_notify.notify = pm_qos_irq_notify;
