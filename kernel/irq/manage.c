@@ -1237,6 +1237,9 @@ __setup_irq(unsigned int irq, struct irq_desc *desc, struct irqaction *new)
 			if (ret)
 				goto out_thread;
 		}
+
+		if (new->flags & IRQF_PERF_CRITICAL)
+			affine_one_perf_thread(new->thread);
 	}
 
 	/*
