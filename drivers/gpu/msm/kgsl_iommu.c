@@ -1738,9 +1738,7 @@ static int kgsl_iommu_start(struct kgsl_mmu *mmu)
 	}
 
 	/* Make sure the hardware is programmed to the default pagetable */
-	kgsl_iommu_set_pt(mmu, mmu->defaultpagetable);
-	set_bit(KGSL_MMU_STARTED, &mmu->flags);
-	return 0;
+	return kgsl_iommu_set_pt(mmu, mmu->defaultpagetable);
 }
 
 static int
@@ -2125,8 +2123,6 @@ static void kgsl_iommu_stop(struct kgsl_mmu *mmu)
 		for (i = 0; i < KGSL_IOMMU_CONTEXT_MAX; i++)
 			_detach_context(&iommu->ctx[i]);
 	}
-
-	clear_bit(KGSL_MMU_STARTED, &mmu->flags);
 }
 
 static u64
