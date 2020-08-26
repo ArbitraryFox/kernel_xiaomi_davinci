@@ -3448,7 +3448,7 @@ EXPORT_SYMBOL(kgsl_pwr_limits_get_freq);
  * kgsl_pwrctrl_set_default_gpu_pwrlevel() - Set GPU to default power level
  * @device: Pointer to the kgsl_device struct
  */
-int kgsl_pwrctrl_set_default_gpu_pwrlevel(struct kgsl_device *device)
+void kgsl_pwrctrl_set_default_gpu_pwrlevel(struct kgsl_device *device)
 {
 	struct kgsl_pwrctrl *pwr = &device->pwrctrl;
 	unsigned int new_level = pwr->default_pwrlevel;
@@ -3470,5 +3470,5 @@ int kgsl_pwrctrl_set_default_gpu_pwrlevel(struct kgsl_device *device)
 	pwr->previous_pwrlevel = old_level;
 
 	/* Request adjusted DCVS level */
-	return kgsl_clk_set_rate(device, pwr->active_pwrlevel);
+	kgsl_clk_set_rate(device, pwr->active_pwrlevel);
 }
