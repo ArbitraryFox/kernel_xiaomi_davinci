@@ -30,7 +30,6 @@
 #include <linux/platform_device.h>
 #include <linux/etherdevice.h>
 #include <linux/of.h>
-#include <linux/list.h>
 
 #include "mhi.h"
 
@@ -527,6 +526,8 @@ static int mhi_dev_net_open_chan_create_netif(struct mhi_dev_net_client *client)
 	mhi_dev_net_log(MHI_DBG, "opening OUT %d IN %d channels\n",
 			client->out_chan,
 			client->in_chan);
+	mutex_lock(&client->out_chan_lock);
+	mutex_lock(&client->in_chan_lock);
 	mhi_dev_net_log(MHI_DBG,
 			"Initializing inbound chan %d.\n",
 			client->in_chan);
@@ -551,6 +552,8 @@ static int mhi_dev_net_open_chan_create_netif(struct mhi_dev_net_client *client)
 	} else
 		atomic_set(&client->tx_enabled, 1);
 
+	mutex_unlock(&client->in_chan_lock);
+	mutex_unlock(&client->out_chan_lock);
 	mhi_dev_net_log(MHI_INFO, "IN %d, OUT %d channels are opened",
 			client->in_chan, client->out_chan);
 
@@ -598,8 +601,8 @@ static int mhi_dev_net_close(void)
 			"mhi_dev_net module is removed\n");
 	client = mhi_net_ctxt.client_handle;
 	mhi_dev_close_channel(client->out_handle);
-	atomic_set(&client->tx_enabled, 0);
 	mhi_dev_close_channel(client->in_handle);
+	atomic_set(&client->tx_enabled, 0);
 	atomic_set(&client->rx_enabled, 0);
 	if (client->dev != NULL) {
 		netif_stop_queue(client->dev);
@@ -633,18 +636,6 @@ static int mhi_dev_net_dergstr_client
 	mutex_destroy(&client->out_chan_lock);
 
 	return 0;
-}
-
-static void mhi_dev_net_free_reqs(struct list_head *buff)
-{
-	struct list_head *node, *next;
-	struct mhi_req *mreq;
-
-	list_for_each_safe(node, next, buff) {
-		mreq = list_entry(node, struct mhi_req, list);
-		list_del(&mreq->list);
-		kfree(mreq);
-	}
 }
 
 static void mhi_dev_net_state_cb(struct mhi_dev_client_cb_data *cb_data)
@@ -695,15 +686,11 @@ static void mhi_dev_net_state_cb(struct mhi_dev_client_cb_data *cb_data)
 			netif_stop_queue(mhi_client->dev);
 			unregister_netdev(mhi_client->dev);
 			mhi_dev_close_channel(mhi_client->out_handle);
-			atomic_set(&mhi_client->tx_enabled, 0);
 			mhi_dev_close_channel(mhi_client->in_handle);
+			atomic_set(&mhi_client->tx_enabled, 0);
 			atomic_set(&mhi_client->rx_enabled, 0);
-			mhi_dev_net_free_reqs(&mhi_client->rx_buffers);
-			mhi_dev_net_free_reqs(&mhi_client->wr_req_buffers);
 			free_netdev(mhi_client->dev);
 			mhi_client->dev = NULL;
-			kfree(mhi_client);
-			kfree(mhi_net_ipc_log);
 		}
 	}
 }
