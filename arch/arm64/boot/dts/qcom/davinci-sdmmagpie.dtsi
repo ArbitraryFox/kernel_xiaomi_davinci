@@ -826,3 +826,17 @@
 	qcom,panel-allow-phy-poweroff;
 	qcom,ulps-enabled;
 };
+
+&pm6150l_rgb_led {
+	red {
+		status = "disabled";
+	};
+
+	green {
+		label = "left";
+	};
+
+	blue {
+		label = "right";
+	};
+};
