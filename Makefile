@@ -504,6 +504,7 @@ endif
 CLANG_FLAGS	+= -no-integrated-as
 KBUILD_CFLAGS	+= $(CLANG_FLAGS)
 KBUILD_AFLAGS	+= $(CLANG_FLAGS)
+KBUILD_CFLAGS += $(call cc-disable-warning, pointer-to-enum-cast)
 export CLANG_FLAGS
 endif
 
