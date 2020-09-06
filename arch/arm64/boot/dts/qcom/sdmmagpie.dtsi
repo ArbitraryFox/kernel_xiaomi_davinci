@@ -268,7 +268,7 @@
 			compatible = "arm,armv8";
 			reg = <0x0 0x600>;
 			enable-method = "psci";
-			capacity-dmips-mhz = <3286>;
+			capacity-dmips-mhz = <4183>;
 			sched-energy-costs = <&CPU_COST_1 &CLUSTER_COST_1>;
 			cache-size = <0x10000>;
 			next-level-cache = <&L2_600>;
@@ -310,7 +310,7 @@
 			compatible = "arm,armv8";
 			reg = <0x0 0x700>;
 			enable-method = "psci";
-			capacity-dmips-mhz = <3286>;
+			capacity-dmips-mhz = <4183>;
 			sched-energy-costs = <&CPU_COST_1 &CLUSTER_COST_1>;
 			cache-size = <0x10000>;
 			next-level-cache = <&L2_700>;
@@ -392,11 +392,11 @@
 
 		CPU_COST_0: core-cost0 {
 			busy-cost-data = <
-				1017600 1024
-				1497600 1349
-				1612800 1405
-				1708800 1425
-				1804800 1440
+				 768000 1024
+				1497600 1683
+				1612800 1753
+				1708800 1777
+				1804800 1796
 			>;
 			idle-cost-data = <
 				16 12 8 6
@@ -405,11 +405,11 @@
 
 		CPU_COST_1: core-cost1 {
 			busy-cost-data = <
-				1209600 2794
-				1555200 3140
-				1708800 3229
-				1939200 3353
-				2208000 3286
+				1094400 3226
+				1555200 3917
+				1708800 4029
+				1939200 4183
+				2208000 4100
 			>;
 			idle-cost-data = <
 				100 80 60 40
@@ -418,7 +418,7 @@
 
 		CLUSTER_COST_0: cluster-cost0 {
 			busy-cost-data = <
-				1017600	7
+				768000	5
 				1497600	10
 				1612800	12
 				1708800	14
@@ -431,7 +431,7 @@
 
 		CLUSTER_COST_1: cluster-cost1 {
 			busy-cost-data = <
-				1209600	32
+				1094400	26
 				1555200	41
 				1843200	49
 				1939200	50
@@ -968,14 +968,14 @@
 
 		#clock-cells = <1>;
 		qcom,cpufreq-table-0 =
-			<1017600>,
+			<768000>,
 			<1497600>,
 			<1612800>,
 			<1708800>,
 			<1804800>;
 
 		qcom,cpufreq-table-6 =
-			<1209600>,
+			<1094400>,
 			<1555200>,
 			<1708800>,
 			<1939200>,
