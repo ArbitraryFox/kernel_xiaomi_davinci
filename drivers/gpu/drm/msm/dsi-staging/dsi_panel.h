@@ -127,6 +127,7 @@ struct dsi_backlight_config {
 	u32 bl_doze_hbm;
 
 	int en_gpio;
+	bool bl_remap_flag;
 
 	bool dcs_type_ss_ea;
 	bool dcs_type_ss_eb;
