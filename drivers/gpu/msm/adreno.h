@@ -1684,7 +1684,7 @@ static inline void adreno_set_protected_registers(
 	*index = *index + 1;
 }
 
-#if 0
+#ifdef CONFIG_DEBUG_FS
 void adreno_debugfs_init(struct adreno_device *adreno_dev);
 void adreno_context_debugfs_init(struct adreno_device *adreno_dev,
 				struct adreno_context *ctx);
