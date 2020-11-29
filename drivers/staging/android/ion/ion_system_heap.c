@@ -41,7 +41,7 @@ int order_to_index(unsigned int order)
 {
 	int i;
 
-	for (i = 0; i < num_orders; i++)
+	for (i = 0; i < NUM_ORDERS; i++)
 		if (order == orders[i])
 			return i;
 	BUG();
@@ -138,7 +138,7 @@ static int alloc_largest_available(struct page_info *info,
 	int i;
 	bool from_pool;
 
-	for (i = 0; i < num_orders; i++) {
+	for (i = 0; i < NUM_ORDERS; i++) {
 		if (size < order_to_size(orders[i]))
 			continue;
 		if (max_order < orders[i])
@@ -168,7 +168,7 @@ static int alloc_from_pool_preferred(struct page_info *info,
 	if (buffer->flags & ION_FLAG_POOL_FORCE_ALLOC)
 		goto force_alloc;
 
-	for (i = 0; i < num_orders; i++) {
+	for (i = 0; i < NUM_ORDERS; i++) {
 		if (size < order_to_size(orders[i]))
 			continue;
 		if (max_order < orders[i])
@@ -492,7 +492,7 @@ static int ion_system_heap_shrink(struct ion_heap *heap, gfp_t gfp_mask,
 	if (!nr_to_scan)
 		only_scan = 1;
 
-	for (i = 0; i < num_orders; i++) {
+	for (i = 0; i < NUM_ORDERS; i++) {
 		nr_freed = 0;
 
 		for (j = 0; j < VMID_LAST; j++) {
@@ -632,7 +632,7 @@ static void ion_system_heap_destroy_pools(struct ion_page_pool **pools)
 {
 	int i;
 
-	for (i = 0; i < num_orders; i++)
+	for (i = 0; i < NUM_ORDERS; i++)
 		if (pools[i]) {
 			ion_page_pool_destroy(pools[i]);
 			pools[i] = NULL;
@@ -650,7 +650,7 @@ static int ion_system_heap_create_pools(struct ion_page_pool **pools,
 					bool cached)
 {
 	int i;
-	for (i = 0; i < num_orders; i++) {
+	for (i = 0; i < NUM_ORDERS; i++) {
 		struct ion_page_pool *pool;
 		gfp_t gfp_flags = low_order_gfp_flags;
 
