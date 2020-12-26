@@ -134,6 +134,7 @@
 &dsi_ss_fhd_ea_f10_cmd {
 	qcom,mdss-dsi-t-clk-post = <0x0F>;
 	qcom,mdss-dsi-t-clk-pre = <0x37>;
+	qcom,ulps-enabled;
 
 	qcom,mdss-dsi-display-timings {
 		timing@0{
@@ -148,6 +149,7 @@
 &dsi_ss_fhd_eb_f10_cmd {
 	qcom,mdss-dsi-t-clk-post = <0x0F>;
 	qcom,mdss-dsi-t-clk-pre = <0x37>;
+	qcom,ulps-enabled;
 
 	qcom,mdss-dsi-display-timings {
 		timing@0{
@@ -162,6 +164,7 @@
 &dsi_g7b_37_02_0a_video {
 	qcom,mdss-dsi-t-clk-post = <0x0E>;
 	qcom,mdss-dsi-t-clk-pre = <0x34>;
+	qcom,ulps-enabled;
 
 	qcom,mdss-dsi-display-timings {
 		timing@0{
@@ -176,6 +179,7 @@
 &dsi_g7b_37_02_0b_video {
 	qcom,mdss-dsi-t-clk-post = <0x0E>;
 	qcom,mdss-dsi-t-clk-pre = <0x34>;
+	qcom,ulps-enabled;
 
 	qcom,mdss-dsi-display-timings {
 		timing@0{
@@ -190,6 +194,7 @@
 &dsi_g7b_42_02_0b_video {
 	qcom,mdss-dsi-t-clk-post = <0x0e>;
 	qcom,mdss-dsi-t-clk-pre = <0x34>;
+	qcom,ulps-enabled;
 
 	qcom,mdss-dsi-display-timings {
 		timing@0{
@@ -204,6 +209,7 @@
 &dsi_xiaomi_f4_36_02_0b_fhd_cmd {
 	qcom,mdss-dsi-t-clk-post = <0x09>;
 	qcom,mdss-dsi-t-clk-pre = <0x1A>;
+	qcom,ulps-enabled;
 
 	qcom,mdss-dsi-display-timings {
 		timing@0{
@@ -218,6 +224,7 @@
 &dsi_xiaomi_f4_41_06_0a_fhd_cmd {
 	qcom,mdss-dsi-t-clk-post = <0x0E>;
 	qcom,mdss-dsi-t-clk-pre = <0x33>;
+	qcom,ulps-enabled;
 
 	qcom,mdss-dsi-display-timings {
 		timing@0{
@@ -232,6 +239,7 @@
 &dsi_xiaomi_f4_42_06_0c_fhd_cmd {
 	qcom,mdss-dsi-t-clk-post = <0x0E>;
 	qcom,mdss-dsi-t-clk-pre = <0x33>;
+	qcom,ulps-enabled;
 
 	qcom,mdss-dsi-display-timings {
 		timing@0{
