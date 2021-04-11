@@ -518,10 +518,19 @@ static void set_ep_max_packet_size(const struct f_uac2_opts *uac2_opts,
 		ssize = uac2_opts->c_ssize;
 	}
 
+<<<<<<< HEAD
 	max_packet_size = num_channels(chmask) * ssize *
 		DIV_ROUND_UP(srate, factor / (1 << (ep_desc->bInterval - 1)));
 	ep_desc->wMaxPacketSize = cpu_to_le16(min_t(u16, max_packet_size,
 				le16_to_cpu(ep_desc->wMaxPacketSize)));
+=======
+	max_size_bw = num_channels(chmask) * ssize *
+		((srate / (factor / (1 << (ep_desc->bInterval - 1)))) + 1);
+	ep_desc->wMaxPacketSize = cpu_to_le16(min_t(u16, max_size_bw,
+						    max_size_ep));
+
+	return 0;
+>>>>>>> 5e4b831556053ee05c1e438a3bfc3d05a92fb20a
 }
 
 static int
