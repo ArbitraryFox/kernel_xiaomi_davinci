@@ -130,8 +130,7 @@ ssize_t part_stat_show(struct device *dev,
 	return sprintf(buf,
 		"%8lu %8lu %8llu %8u "
 		"%8lu %8lu %8llu %8u "
-		"%8u %8u %8u "
-		"%8lu %8lu %8llu %8u"
+		"%8u %8u %8u"
 		"\n",
 		part_stat_read(p, ios[STAT_READ]),
 		part_stat_read(p, merges[STAT_READ]),
@@ -143,11 +142,7 @@ ssize_t part_stat_show(struct device *dev,
 		jiffies_to_msecs(part_stat_read(p, ticks[STAT_WRITE])),
 		inflight[0],
 		jiffies_to_msecs(part_stat_read(p, io_ticks)),
-		jiffies_to_msecs(part_stat_read(p, time_in_queue)),
-		part_stat_read(p, ios[STAT_DISCARD]),
-		part_stat_read(p, merges[STAT_DISCARD]),
-		(unsigned long long)part_stat_read(p, sectors[STAT_DISCARD]),
-		jiffies_to_msecs(part_stat_read(p, ticks[STAT_DISCARD])));
+		jiffies_to_msecs(part_stat_read(p, time_in_queue)));
 }
 
 ssize_t part_inflight_show(struct device *dev, struct device_attribute *attr,
