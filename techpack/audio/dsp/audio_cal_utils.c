@@ -1086,6 +1086,7 @@ bool cal_utils_is_cal_stale(struct cal_block_data *cal_block)
 		pr_err("%s: cal_block is Null", __func__);
 		goto unlock;
 	}
+
 	if (cal_block->cal_stale)
 	    ret = true;
 

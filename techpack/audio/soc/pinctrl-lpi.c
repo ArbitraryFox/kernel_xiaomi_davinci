@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2019, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2016-2020, The Linux Foundation. All rights reserved.
  * Copyright (C) 2021 XiaoMi, Inc.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -104,6 +104,7 @@ struct lpi_gpio_state {
 	char __iomem	*base;
 	struct clk *lpass_core_hw_vote;
 	bool core_hw_vote_status;
+	struct mutex lpi_mutex;
 };
 
 static const char *const lpi_gpio_groups[] = {
@@ -129,10 +130,13 @@ static const char *const lpi_gpio_functions[] = {
 static int lpi_gpio_read(struct lpi_gpio_pad *pad, unsigned int addr)
 {
 	int ret;
+	struct lpi_gpio_state *state = dev_get_drvdata(lpi_dev);
 
+	mutex_lock(&state->lpi_mutex);
 	if (!lpi_dev_up) {
 		pr_err_ratelimited("%s: ADSP is down due to SSR, return\n",
 				   __func__);
+		mutex_unlock(&state->lpi_mutex);
 		return 0;
 	}
 	pm_runtime_get_sync(lpi_dev);
@@ -143,15 +147,20 @@ static int lpi_gpio_read(struct lpi_gpio_pad *pad, unsigned int addr)
 
 	pm_runtime_mark_last_busy(lpi_dev);
 	pm_runtime_put_autosuspend(lpi_dev);
+	mutex_unlock(&state->lpi_mutex);
 	return ret;
 }
 
 static int lpi_gpio_write(struct lpi_gpio_pad *pad, unsigned int addr,
 			  unsigned int val)
 {
+	struct lpi_gpio_state *state = dev_get_drvdata(lpi_dev);
+
+	mutex_lock(&state->lpi_mutex);
 	if (!lpi_dev_up) {
 		pr_err_ratelimited("%s: ADSP is down due to SSR, return\n",
 				   __func__);
+		mutex_unlock(&state->lpi_mutex);
 		return 0;
 	}
 	pm_runtime_get_sync(lpi_dev);
@@ -160,6 +169,7 @@ static int lpi_gpio_write(struct lpi_gpio_pad *pad, unsigned int addr,
 
 	pm_runtime_mark_last_busy(lpi_dev);
 	pm_runtime_put_autosuspend(lpi_dev);
+	mutex_unlock(&state->lpi_mutex);
 	return 0;
 }
 
@@ -391,8 +401,10 @@ static int lpi_notifier_service_cb(struct notifier_block *this,
 				   unsigned long opcode, void *ptr)
 {
 	static bool initial_boot = true;
+	struct lpi_gpio_state *state = dev_get_drvdata(lpi_dev);
 
 	pr_debug("%s: Service opcode 0x%lx\n", __func__, opcode);
+	mutex_lock(&state->lpi_mutex);
 
 	switch (opcode) {
 	case AUDIO_NOTIFIER_SERVICE_DOWN:
@@ -412,6 +424,7 @@ static int lpi_notifier_service_cb(struct notifier_block *this,
 	default:
 		break;
 	}
+	mutex_unlock(&state->lpi_mutex);
 	return NOTIFY_OK;
 }
 
@@ -654,6 +667,7 @@ static int lpi_pinctrl_probe(struct platform_device *pdev)
 	pm_runtime_use_autosuspend(&pdev->dev);
 	pm_runtime_set_suspended(&pdev->dev);
 	pm_runtime_enable(&pdev->dev);
+	mutex_init(&state->lpi_mutex);
 
 	return 0;
 
@@ -670,6 +684,7 @@ static int lpi_pinctrl_remove(struct platform_device *pdev)
 	struct lpi_gpio_state *state = platform_get_drvdata(pdev);
 	pm_runtime_disable(&pdev->dev);
 	pm_runtime_set_suspended(&pdev->dev);
+	mutex_destroy(&state->lpi_mutex);
 
 	snd_event_client_deregister(&pdev->dev);
 	audio_notifier_deregister("lpi_tlmm");
