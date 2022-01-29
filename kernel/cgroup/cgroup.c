@@ -4729,7 +4729,7 @@ static struct cftype cgroup_base_files[] = {
 #ifdef CONFIG_PSI
 	{
 		.name = "io.pressure",
-		.flags = CFTYPE_PRESSURE,
+		.flags = CFTYPE_NOT_ON_ROOT | CFTYPE_PRESSURE,
 		.seq_show = cgroup_io_pressure_show,
 		.write = cgroup_io_pressure_write,
 		.poll = cgroup_pressure_poll,
@@ -4737,7 +4737,7 @@ static struct cftype cgroup_base_files[] = {
 	},
 	{
 		.name = "memory.pressure",
-		.flags = CFTYPE_PRESSURE,
+		.flags = CFTYPE_NOT_ON_ROOT | CFTYPE_PRESSURE,
 		.seq_show = cgroup_memory_pressure_show,
 		.write = cgroup_memory_pressure_write,
 		.poll = cgroup_pressure_poll,
@@ -4745,7 +4745,7 @@ static struct cftype cgroup_base_files[] = {
 	},
 	{
 		.name = "cpu.pressure",
-		.flags = CFTYPE_PRESSURE,
+		.flags = CFTYPE_NOT_ON_ROOT | CFTYPE_PRESSURE,
 		.seq_show = cgroup_cpu_pressure_show,
 		.write = cgroup_cpu_pressure_write,
 		.poll = cgroup_pressure_poll,
@@ -5963,6 +5963,15 @@ static int __init cgroup_disable(char *str)
 			static_branch_disable(cgroup_subsys_enabled_key[i]);
 			pr_info("Disabling %s control group subsystem\n",
 				ss->name);
+		}
+
+		for (i = 0; i < OPT_FEATURE_COUNT; i++) {
+			if (strcmp(token, cgroup_opt_feature_names[i]))
+				continue;
+			cgroup_feature_disable_mask |= 1 << i;
+			pr_info("Disabling %s control group feature\n",
+				cgroup_opt_feature_names[i]);
+			break;
 		}
 
 		for (i = 0; i < OPT_FEATURE_COUNT; i++) {
