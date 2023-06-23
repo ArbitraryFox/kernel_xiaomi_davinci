@@ -392,6 +392,15 @@ static void tfa98xx_inputdev_unregister(struct tfa98xx *tfa98xx)
 {
 	__tfa98xx_inputdev_check_register(tfa98xx, true);
 }
+#ifdef TFA_NON_DSP_SOLUTION
+extern int send_tfa_cal_apr(void *buf, int cmd_size, bool bRead);
+#else
+int send_tfa_cal_apr(void *buf, int cmd_size, bool bRead)
+{
+	pr_info("this function is empty!!!\n");
+	return 0;
+}
+#endif
 
 #ifdef TFA_NON_DSP_SOLUTION
 extern int send_tfa_cal_apr(void *buf, int cmd_size, bool bRead);
