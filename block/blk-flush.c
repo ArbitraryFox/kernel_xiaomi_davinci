@@ -86,12 +86,12 @@ enum {
 	REQ_FSEQ_ACTIONS	= REQ_FSEQ_PREFLUSH | REQ_FSEQ_DATA |
 				  REQ_FSEQ_POSTFLUSH,
 
-	/*
-	 * If flush has been pending longer than the following timeout,
-	 * it's issued even if flush_data requests are still in flight.
-	 */
-	FLUSH_PENDING_TIMEOUT	= 5 * HZ,
 };
+/*
+ * If flush has been pending longer than the following timeout,
+ * it's issued even if flush_data requests are still in flight.
+ */
+#define FLUSH_PENDING_TIMEOUT msecs_to_jiffies(5000)
 
 static bool blk_kick_flush(struct request_queue *q,
 			   struct blk_flush_queue *fq);
@@ -306,7 +306,7 @@ static bool blk_kick_flush(struct request_queue *q, struct blk_flush_queue *fq)
 	if (!list_empty(&fq->flush_data_in_flight) &&
 	    !(q->mq_ops && q->elevator) &&
 	    time_before(jiffies,
-			fq->flush_pending_since + FLUSH_PENDING_TIMEOUT))
+			fq->flush_pending_since + msecs_to_jiffies(FLUSH_PENDING_TIMEOUT)))
 		return false;
 
 	/*
