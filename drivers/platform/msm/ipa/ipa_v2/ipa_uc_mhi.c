@@ -657,7 +657,7 @@ int ipa_uc_mhi_init_engine(struct ipa_mhi_msi_info *msi, u32 mmio_addr,
 	init_cmd_data->firstChannelIndex = first_ch_idx;
 	init_cmd_data->firstEventRingIndex = first_evt_idx;
 	res = ipa_uc_send_cmd((u32)mem.phys_base, IPA_CPU_2_HW_CMD_MHI_INIT, 0,
-		false, HZ);
+		false, IPA_TIMEOUT(1));
 	if (res) {
 		IPAERR("ipa_uc_send_cmd failed %d\n", res);
 		dma_free_coherent(ipa_ctx->pdev, mem.size, mem.base,
@@ -682,7 +682,7 @@ int ipa_uc_mhi_init_engine(struct ipa_mhi_msi_info *msi, u32 mmio_addr,
 	msi_cmd->msiData = msi->data;
 	msi_cmd->msiMask = msi->mask;
 	res = ipa_uc_send_cmd((u32)mem.phys_base,
-		IPA_CPU_2_HW_CMD_MHI_UPDATE_MSI, 0, false, HZ);
+		IPA_CPU_2_HW_CMD_MHI_UPDATE_MSI, 0, false, IPA_TIMEOUT(1));
 	if (res) {
 		IPAERR("ipa_uc_send_cmd failed %d\n", res);
 		dma_free_coherent(ipa_ctx->pdev, mem.size, mem.base,
@@ -734,7 +734,7 @@ int ipa_uc_mhi_init_channel(int ipa_ep_idx, int channelHandle,
 	init_cmd.params.channelDirection = channelDirection;
 
 	res = ipa_uc_send_cmd(init_cmd.raw32b,
-		IPA_CPU_2_HW_CMD_MHI_INIT_CHANNEL, 0, false, HZ);
+		IPA_CPU_2_HW_CMD_MHI_INIT_CHANNEL, 0, false, IPA_TIMEOUT(1));
 	if (res) {
 		IPAERR("ipa_uc_send_cmd failed %d\n", res);
 		goto disable_clks;
@@ -772,7 +772,7 @@ int ipa2_uc_mhi_reset_channel(int channelHandle)
 	cmd.params.requestedState = IPA_HW_MHI_CHANNEL_STATE_DISABLE;
 	cmd.params.channelHandle = channelHandle;
 	res = ipa_uc_send_cmd(cmd.raw32b,
-		IPA_CPU_2_HW_CMD_MHI_CHANGE_CHANNEL_STATE, 0, false, HZ);
+		IPA_CPU_2_HW_CMD_MHI_CHANGE_CHANNEL_STATE, 0, false, IPA_TIMEOUT(1));
 	if (res) {
 		IPAERR("ipa_uc_send_cmd failed %d\n", res);
 		goto disable_clks;
@@ -809,7 +809,7 @@ int ipa2_uc_mhi_suspend_channel(int channelHandle)
 	cmd.params.requestedState = IPA_HW_MHI_CHANNEL_STATE_SUSPEND;
 	cmd.params.channelHandle = channelHandle;
 	res = ipa_uc_send_cmd(cmd.raw32b,
-		IPA_CPU_2_HW_CMD_MHI_CHANGE_CHANNEL_STATE, 0, false, HZ);
+		IPA_CPU_2_HW_CMD_MHI_CHANGE_CHANNEL_STATE, 0, false, IPA_TIMEOUT(1));
 	if (res) {
 		IPAERR("ipa_uc_send_cmd failed %d\n", res);
 		goto disable_clks;
@@ -847,7 +847,7 @@ int ipa_uc_mhi_resume_channel(int channelHandle, bool LPTransitionRejected)
 	cmd.params.channelHandle = channelHandle;
 	cmd.params.LPTransitionRejected = LPTransitionRejected;
 	res = ipa_uc_send_cmd(cmd.raw32b,
-		IPA_CPU_2_HW_CMD_MHI_CHANGE_CHANNEL_STATE, 0, false, HZ);
+		IPA_CPU_2_HW_CMD_MHI_CHANGE_CHANNEL_STATE, 0, false, IPA_TIMEOUT(1));
 	if (res) {
 		IPAERR("ipa_uc_send_cmd failed %d\n", res);
 		goto disable_clks;
@@ -880,7 +880,7 @@ int ipa2_uc_mhi_stop_event_update_channel(int channelHandle)
 	ipa_uc_mhi_ctx->expected_responseParams = cmd.raw32b;
 
 	res = ipa_uc_send_cmd(cmd.raw32b,
-		IPA_CPU_2_HW_CMD_MHI_STOP_EVENT_UPDATE, 0, false, HZ);
+		IPA_CPU_2_HW_CMD_MHI_STOP_EVENT_UPDATE, 0, false, IPA_TIMEOUT(1));
 	if (res) {
 		IPAERR("ipa_uc_send_cmd failed %d\n", res);
 		goto disable_clks;
@@ -910,7 +910,7 @@ int ipa2_uc_mhi_send_dl_ul_sync_info(union IpaHwMhiDlUlSyncCmdData_t *cmd)
 	IPA_ACTIVE_CLIENTS_INC_SIMPLE();
 
 	res = ipa_uc_send_cmd(cmd->raw32b,
-		IPA_CPU_2_HW_CMD_MHI_DL_UL_SYNC_INFO, 0, false, HZ);
+		IPA_CPU_2_HW_CMD_MHI_DL_UL_SYNC_INFO, 0, false, IPA_TIMEOUT(1));
 	if (res) {
 		IPAERR("ipa_uc_send_cmd failed %d\n", res);
 		goto disable_clks;
