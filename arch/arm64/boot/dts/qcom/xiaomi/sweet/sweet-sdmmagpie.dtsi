@@ -584,8 +584,9 @@ And public attribution of xiaomi platforms(like F3 and so and)
 &qupv3_se8_spi {
 	status = "ok";
 	irled@0 {
-		compatible = "ir-spi";
+		compatible = "ir-spi-led";
 		reg = <0x0>;
+		power-supply = <&irda_regulator>;
 		status = "ok";
 		spi-max-frequency = <19200000>;
 	};
@@ -599,6 +600,10 @@ And public attribution of xiaomi platforms(like F3 and so and)
 	};
 	thermal_message: thermal-message {
 		board-sensor = "VIRTUAL-SENSOR";
+	};
+	irda_regulator: irda-regulator {
+		compatible = "regulator-dummy";
+		regulator-name = "irda_regulator";
 	};
 };
 
@@ -670,6 +675,18 @@ And public attribution of xiaomi platforms(like F3 and so and)
 };
 
 &dsi_k6_38_0c_0a_fhd_dsc_video {
+	qcom,panel-supply-entries = <&dsi_panel_pwr_supply_labibb_amoled>;
+	qcom,mdss-dsi-bl-pmic-control-type = "bl_ctrl_dcs";
+	qcom,mdss-dsi-bl-min-level = <8>;
+	qcom,mdss-dsi-bl-max-level = <2047>;
+	qcom,mdss-brightness-max-level = <2047>;
+	qcom,mdss-dsi-mode-sel-gpio-state = "single_port";
+	//qcom,platform-en-gpio = <&tlmm 30 0>;
+	qcom,platform-te-gpio = <&tlmm 10 0>;
+	qcom,platform-reset-gpio = <&pm6150l_gpios 9 0>;
+};
+
+&dsi_k6_38_0e_0b_fhd_dsc_video {
 	qcom,panel-supply-entries = <&dsi_panel_pwr_supply_labibb_amoled>;
 	qcom,mdss-dsi-bl-pmic-control-type = "bl_ctrl_dcs";
 	qcom,mdss-dsi-bl-min-level = <8>;
