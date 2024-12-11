@@ -4114,7 +4114,7 @@ repeat:
 			ext4_msg(sb, KERN_ERR,
 				 "uh-oh! used pa while discarding");
 			WARN_ON(1);
-			schedule_timeout_uninterruptible(msecs_to_jiffies(1000));
+			schedule_timeout_uninterruptible(HZ);
 			goto repeat;
 
 		}
@@ -4142,7 +4142,7 @@ repeat:
 		 * add a flag to force wait only in case
 		 * of ->clear_inode(), but not in case of
 		 * regular truncate */
-		schedule_timeout_uninterruptible(msecs_to_jiffies(1000));
+		schedule_timeout_uninterruptible(HZ);
 		goto repeat;
 	}
 	spin_unlock(&ei->i_prealloc_lock);
